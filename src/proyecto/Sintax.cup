@@ -1,0 +1,94 @@
+package proyecto;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Entero,Flotante,Boleano,Cadena,Para,Cambio,Si,Sino,Ademas,Mientras,Publico,Inicial,Linea,Comillas,
+Igual, Exponente,Suma, Resta, Multiplicacion, Division,LlaveAC, CerrarL, Apertura,
+Cerradura,Op_R,Op_L,Op_B,Op_I,Identificador, Numero, Decimal, Arroba, DoblePunto, Caso, Salida, ERROR;
+
+non terminal INICIO, CUERPO, DECLA, IF, IF_ELSE,
+FOR, BOOL_SENT, FOR_SENT, SWITCH, MASCASE, WHILE, SENT_IF, ELSE;
+
+start with INICIO;
+
+INICIO ::= 
+    Inicial Apertura Cerradura LlaveAC CUERPO LlaveAC
+;
+CUERPO ::= 
+    CUERPO DECLA | DECLA | 
+    CUERPO SENT_IF | SENT_IF | 
+    CUERPO FOR | FOR |
+    CUERPO SWITCH | SWITCH |
+    CUERPO WHILE | WHILE
+;
+DECLA ::=
+    Entero Identificador CerrarL |
+    Flotante Identificador CerrarL |
+    Boleano Identificador CerrarL |
+    Cadena Identificador CerrarL |
+    Flotante Identificador Igual Decimal CerrarL |
+    Boleano Identificador Igual Op_B CerrarL |
+    Entero Identificador Igual Numero CerrarL |
+    Cadena Identificador Igual Comillas Identificador Comillas CerrarL
+;
+
+SENT_IF::=
+    IF | IF ELSE | IF IF_ELSE | IF IF_ELSE ELSE
+;
+
+IF ::= 
+    Si Apertura BOOL_SENT Cerradura LlaveAC CUERPO LlaveAC
+;
+
+ELSE ::=
+    Ademas LlaveAC CUERPO LlaveAC
+;
+
+IF_ELSE::=
+    Sino Apertura BOOL_SENT Cerradura LlaveAC CUERPO LlaveAC |
+    Sino Apertura BOOL_SENT Cerradura LlaveAC CUERPO LlaveAC IF_ELSE
+;
+
+FOR ::= 
+    Para Apertura FOR_SENT Cerradura LlaveAC CUERPO LlaveAC
+;
+
+FOR_SENT ::=
+    Entero Identificador Igual Numero CerrarL BOOL_SENT CerrarL
+    Identificador Op_I
+;
+
+BOOL_SENT ::=
+    Identificador Op_R Op_B | Identificador Op_R Op_B Op_L BOOL_SENT |
+    Identificador Op_R Numero | Identificador Op_R Numero Op_L BOOL_SENT | 
+    Identificador Op_R Decimal | Identificador Op_R Decimal Op_L BOOL_SENT | 
+    Identificador Op_R Identificador | Identificador Op_R Identificador Op_L BOOL_SENT | 
+    Identificador Op_R Comillas Identificador Comillas | Identificador Op_R Comillas Identificador Comillas Op_L BOOL_SENT | 
+;
+
+SWITCH ::=
+    Cambio Apertura Identificador Cerradura LlaveAC Caso Identificador DoblePunto CUERPO Salida CerrarL LlaveAC |
+    Cambio Apertura Identificador Cerradura LlaveAC Caso Identificador DoblePunto CUERPO Salida CerrarL MASCASE LlaveAC 
+;
+
+MASCASE ::=
+    Caso Identificador DoblePunto CUERPO Salida CerrarL |
+    Caso Identificador DoblePunto CUERPO Salida CerrarL MASCASE
+;
+
+WHILE ::=
+    Mientras Apertura BOOL_SENT Cerradura LlaveAC CUERPO LlaveAC
+;
