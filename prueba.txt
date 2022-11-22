@@ -1,0 +1,18 @@
+inicial[]#
+cadena c&
+entero pruebas&
+cambio[id]#
+caso w:
+flotante a = 3.455&
+salida&
+caso y:
+entero b = 3&
+salida&
+caso z:
+cadena c = 'hola'&
+salida&
+caso a:
+boleano d = falso&
+salida&
+ #
+#
