@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/pache/OneDrive/Escritorio/AnalizadorLexico/src/proyecto/InterfazAnalizador.java</file>
-            <file>file:/C:/Users/pache/OneDrive/Escritorio/AnalizadorLexico/src/proyecto/Lex.flex</file>
-            <file>file:/C:/Users/pache/OneDrive/Escritorio/AnalizadorLexico/src/proyecto/objetoTabla.java</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Lex.flex</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/objetoTabla.java</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/InterfazAnalizador.java</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Analizador.java</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/LexerCup.flex</file>
+            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Sintax.cup</file>
         </group>
     </open-files>
 </project-private>

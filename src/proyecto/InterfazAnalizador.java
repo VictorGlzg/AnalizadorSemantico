@@ -19,9 +19,11 @@ import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
 /*
 -ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
 -CHECAR LOS DECIMALES.
--SEPARAR LÉXICO DEL SEMÁNTICO.
 -CREAR FRAME PARA TABLA DE SIMBOLOS.
 -ARREGAR ASIGNACIÓN AL SINTÁCTICO -COMPROBAR EL TIPO DE DATO AL ASIGNAR
+
+COMPLETADAS:
+-SEPARAR LÉXICO DEL SEMÁNTICO.
 */
 
 public class InterfazAnalizador extends javax.swing.JFrame {
@@ -29,6 +31,7 @@ ArrayList<objetoTabla> tablaSimbolos = new ArrayList<objetoTabla>();
 String var, valor;
 Tokens tipo;
 Boolean declaracion = false, fin = false, valAsig = false, error = false ,asignacion = false;
+String semant="";
     /**
      * Creates new form InterfazAnalizador
      */
@@ -45,6 +48,7 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         //System.out.println(expr);
         Lex lexer = new Lex(new StringReader(expr));
         String resultado = "LINEA " + cont + "\t\tSIMBOLO\n";
+        
 
         while (true) {
             Tokens token = lexer.yylex();
@@ -230,7 +234,8 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         for(objetoTabla o : tablaSimbolos ){
             if(id.equals(o.var)){
                 if(declaracion){
-                    System.out.println("Error variable: "+tipo+" '"+id+"' ya asignada al tipo: "+o.tipo);
+                    //System.out.println("Error variable: "+tipo+" '"+id+"' ya asignada al tipo: "+o.tipo);
+                    semant += "Error variable: "+tipo+" '"+id+"' ya asignada al tipo: "+o.tipo+"\n";
                     error = true;
                 }
                 else{
@@ -241,7 +246,8 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
             }
         }
         if(asignacion&&!existe){
-            System.out.println("Error variable: '"+id+"' no ha sido creada");
+            //System.out.println("Error variable: '"+id+"' no ha sido creada");
+            semant += "Error variable: '"+id+"' no ha sido creada\n";
         }
     }
     
@@ -264,8 +270,14 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         btnAnalizarSint = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAnaliSint = new javax.swing.JTextArea();
-        btnLimpiarSint = new javax.swing.JButton();
         btnAnalizarLex = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        semantico = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        btnAnalizarSint1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -291,7 +303,7 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         });
 
         labelTitulo.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        labelTitulo.setText("Analizador Léxico y Sintáctico");
+        labelTitulo.setText("Analizador");
 
         txtAnalizar.setColumns(20);
         txtAnalizar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -311,19 +323,32 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         txtAnaliSint.setRows(5);
         jScrollPane3.setViewportView(txtAnaliSint);
 
-        btnLimpiarSint.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnLimpiarSint.setText("Limpiar");
-        btnLimpiarSint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarSintActionPerformed(evt);
-            }
-        });
-
         btnAnalizarLex.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAnalizarLex.setText("Analizar");
         btnAnalizarLex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAnalizarLexActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Entrada de código:");
+
+        jLabel2.setText("Lexico:");
+
+        jLabel3.setText("Sintáctico");
+
+        semantico.setColumns(20);
+        semantico.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        semantico.setRows(5);
+        jScrollPane4.setViewportView(semantico);
+
+        jLabel4.setText("Semantico:");
+
+        btnAnalizarSint1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAnalizarSint1.setText("Analizar");
+        btnAnalizarSint1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarSint1ActionPerformed(evt);
             }
         });
 
@@ -334,62 +359,77 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(87, 87, 87)
-                                .addComponent(btnAbrirFile))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(105, 105, 105)
-                                .addComponent(btnLimpiar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(97, 97, 97)
-                                .addComponent(btnAnalizarLex, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(102, 102, 102)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAnalizarSint, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLimpiarSint, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTitulo)
-                .addGap(228, 228, 228))
+                    .addComponent(labelTitulo)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnAnalizarSint)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(btnAnalizarLex, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnAbrirFile, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(155, 155, 155)
+                                            .addComponent(jLabel4)))))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
+                        .addComponent(btnAnalizarSint1)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelTitulo)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelTitulo)
                         .addGap(48, 48, 48)
                         .addComponent(btnAbrirFile)
                         .addGap(18, 18, 18)
                         .addComponent(btnAnalizarLex)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnLimpiar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiar)
+                        .addGap(107, 107, 107)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(btnAnalizarSint)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLimpiarSint)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(btnAnalizarSint, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(btnAnalizarSint1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -432,10 +472,6 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         }
     }//GEN-LAST:event_btnAnalizarSintActionPerformed
 
-    private void btnLimpiarSintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarSintActionPerformed
-        Limpiar();
-    }//GEN-LAST:event_btnLimpiarSintActionPerformed
-
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarLexActionPerformed
         try {
             // TODO add your handling code here:
@@ -445,6 +481,10 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
             Logger.getLogger(InterfazAnalizador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAnalizarLexActionPerformed
+
+    private void btnAnalizarSint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarSint1ActionPerformed
+    semantico.setText(semant);
+    }//GEN-LAST:event_btnAnalizarSint1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -461,12 +501,18 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
     private javax.swing.JButton btnAbrirFile;
     private javax.swing.JButton btnAnalizarLex;
     private javax.swing.JButton btnAnalizarSint;
+    private javax.swing.JButton btnAnalizarSint1;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnLimpiarSint;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JTextArea semantico;
     private javax.swing.JTextArea txtAnaliSint;
     private javax.swing.JTextArea txtAnalizado;
     private javax.swing.JTextArea txtAnalizar;
@@ -476,5 +522,7 @@ Boolean declaracion = false, fin = false, valAsig = false, error = false ,asigna
         txtAnalizar.setText("");
         txtAnalizado.setText("");
         txtAnaliSint.setText("");
+        semantico.setText("");
+        semant="";
     }
 }
