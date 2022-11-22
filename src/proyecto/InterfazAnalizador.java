@@ -27,6 +27,7 @@ COMPLETADAS:
 */
 
 public class InterfazAnalizador extends javax.swing.JFrame {
+JFrameTablaSimbolos  jf = new JFrameTablaSimbolos();
 ArrayList<objetoTabla> tablaSimbolos = new ArrayList<objetoTabla>();
 String var, valor;
 Tokens tipo;
@@ -226,6 +227,7 @@ String semant="";
         System.out.println("Tipo - Variable - Valor ");
         for(objetoTabla o : tablaSimbolos ){
         System.out.println(o.tipo+" "+o.var+" "+o.valor);
+        jf.recibeObjeto(o);
         }
     }
     
@@ -278,6 +280,7 @@ String semant="";
         semantico = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         btnAnalizarSint1 = new javax.swing.JButton();
+        btnLimpiar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -352,6 +355,14 @@ String semant="";
             }
         });
 
+        btnLimpiar1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnLimpiar1.setText("Tabla de simbolos");
+        btnLimpiar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -380,7 +391,8 @@ String semant="";
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                 .addComponent(btnAnalizarLex, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnAbrirFile, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                                                .addComponent(btnAbrirFile, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                                                .addComponent(btnLimpiar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(155, 155, 155)
                                             .addComponent(jLabel4)))))
@@ -412,7 +424,9 @@ String semant="";
                         .addComponent(btnAnalizarLex)
                         .addGap(18, 18, 18)
                         .addComponent(btnLimpiar)
-                        .addGap(107, 107, 107)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiar1)
+                        .addGap(56, 56, 56)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -429,7 +443,7 @@ String semant="";
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -486,6 +500,10 @@ String semant="";
     semantico.setText(semant);
     }//GEN-LAST:event_btnAnalizarSint1ActionPerformed
 
+    private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
+    jf.show();
+    }//GEN-LAST:event_btnLimpiar1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -503,6 +521,7 @@ String semant="";
     private javax.swing.JButton btnAnalizarSint;
     private javax.swing.JButton btnAnalizarSint1;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnLimpiar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -524,5 +543,6 @@ String semant="";
         txtAnaliSint.setText("");
         semantico.setText("");
         semant="";
+        tablaSimbolos = new ArrayList<objetoTabla>();
     }
 }
