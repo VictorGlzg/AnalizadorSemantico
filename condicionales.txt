@@ -1,0 +1,7 @@
+inicial[]#
+entero b = 3&
+cadena c&
+si[c<b]#
+flotante t = .3&
+#
+#

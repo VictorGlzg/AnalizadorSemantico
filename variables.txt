@@ -1,0 +1,10 @@
+inicial[]#
+cadena c&
+cadena ch = 'pruebas'&
+entero pruebas&
+entero variable = 3&
+flotante f = 3.656&
+flotante variable = 3.24&
+boleano b = verdadero&
+boleano x&
+#

@@ -18,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
 import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
 
 /*
-- BOTON LIMPIAR TABLA DE SIMBOLOS
 - COMPROBAR TIPO DE DATO EN ASIGNACIÓN. -- SINTAX.CUP
 - ARREGLAR SINTACTICO ASIGNACIÓN DE VARIABLE.
 
 COMPLETADAS:
+- BOTON LIMPIAR TABLA DE SIMBOLOS
 - ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
 - CHECAR LOS DECIMALES.
 -SEPARAR LÉXICO DEL SEMÁNTICO.
@@ -87,6 +87,8 @@ String semant="";
                     break;
                 case Cadena:
                     resultado += "  <Tipo de dato>\t" + lexer.lexeme + "\n";
+                    tipo = token;
+                    declaracion = true;
                     break;
                 case Si:
                     resultado += "  <Reservada if>\t" + lexer.lexeme + "\n";
@@ -177,6 +179,10 @@ String semant="";
                     break;
                 case Texto:
                     resultado += "  <Texto>\t\t" + lexer.lexeme + "\n";
+                    if(declaracion||asignacion){
+                    valor = lexer.lexeme;
+                    valAsig = true;
+                    }
                     break;
                 case Arroba:
                     resultado += "  <Arroba>\t" + lexer.lexeme + "\n";
@@ -496,6 +502,9 @@ String semant="";
     }//GEN-LAST:event_btnAnalizarSintActionPerformed
 
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarLexActionPerformed
+        tblModel.setRowCount(0);
+        semant = "";
+        tablaSimbolos = new ArrayList<objetoTabla>();
         try {
             // TODO add your handling code here:
             analizarLex();
@@ -506,7 +515,13 @@ String semant="";
     }//GEN-LAST:event_btnAnalizarLexActionPerformed
 
     private void btnAnalizarSint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarSint1ActionPerformed
+    if(semant==""){
+        semantico.setText("Analisis realizado correctamente");
+        semantico.setForeground(new Color(25,111,61));
+    } else{
     semantico.setText(semant);
+    semantico.setForeground(Color.RED);
+        }
     }//GEN-LAST:event_btnAnalizarSint1ActionPerformed
 
     private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
@@ -553,5 +568,6 @@ String semant="";
         semantico.setText("");
         semant="";
         tablaSimbolos = new ArrayList<objetoTabla>();
+        tblModel.setRowCount(0);
     }
 }
