@@ -66,4 +66,5 @@ sino {lexeme=yytext(); return Sino;}
 {L}({L}|{N})* {lexeme=yytext(); return Identificador;} //Regla sintaxica
 {N} {lexeme=yytext(); return Numero;}
 ({N}{ND}{N})|({N}|{ND}{N}) {lexeme=yytext(); return Decimal;}
+("\'"{L}*({espacio}*{L}*)"\'") {lexeme=yytext(); return Texto;}
  . {return ERROR;}

@@ -73,4 +73,5 @@ sino {return new Symbol(sym.Sino, yychar, yyline, yytext());}
 {L}({L}|{N})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());} //Regla sintaxica
 {N} {return new Symbol(sym.Numero, yychar, yyline, yytext());}
 ({N}{ND}{N})|({N}|{ND}{N}) {return new Symbol(sym.Decimal, yychar, yyline, yytext());}
+("\'"{L}*({espacio}*{L}*)"\'") {return new Symbol(sym.Texto, yychar, yyline, yytext());} 
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}

@@ -15,7 +15,7 @@ parser code
 }
 :};
 
-terminal Entero,Flotante,Boleano,Cadena,Para,Cambio,Si,Sino,Ademas,Mientras,Publico,Inicial,Linea,Comillas,
+terminal Entero,Flotante,Boleano,Cadena,Texto,Para,Cambio,Si,Sino,Ademas,Mientras,Publico,Inicial,Linea,Comillas,
 Igual, Exponente,Suma, Resta, Multiplicacion, Division,LlaveAC, CerrarL, Apertura,
 Cerradura,Op_R,Op_L,Op_B,Op_I,Identificador, Numero, Decimal, Arroba, DoblePunto, Caso, Salida, ERROR;
 
@@ -42,7 +42,7 @@ DECLA ::=
     Flotante Identificador Igual Decimal CerrarL |
     Boleano Identificador Igual Op_B CerrarL |
     Entero Identificador Igual Numero CerrarL |
-    Cadena Identificador Igual Comillas Identificador Comillas CerrarL
+    Cadena Identificador Igual Texto CerrarL
 ;
 
 SENT_IF::=

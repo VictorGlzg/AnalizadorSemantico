@@ -18,11 +18,12 @@ import javax.swing.table.DefaultTableModel;
 import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
 
 /*
-- ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
-- COMPROBAR TIPO DE DATO EN ASIGNACIÓN.
+- BOTON LIMPIAR TABLA DE SIMBOLOS
+- COMPROBAR TIPO DE DATO EN ASIGNACIÓN. -- SINTAX.CUP
 - ARREGLAR SINTACTICO ASIGNACIÓN DE VARIABLE.
 
 COMPLETADAS:
+- ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
 - CHECAR LOS DECIMALES.
 -SEPARAR LÉXICO DEL SEMÁNTICO.
 -CREAR FRAME PARA TABLA DE SIMBOLOS.
@@ -173,6 +174,9 @@ String semant="";
                     valor = lexer.lexeme;
                     valAsig = true;
                     }
+                    break;
+                case Texto:
+                    resultado += "  <Texto>\t\t" + lexer.lexeme + "\n";
                     break;
                 case Arroba:
                     resultado += "  <Arroba>\t" + lexer.lexeme + "\n";

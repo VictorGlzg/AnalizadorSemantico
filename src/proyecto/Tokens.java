@@ -36,5 +36,6 @@ public enum Tokens {
     Identificador, 
     Numero, 
     Decimal,
+    Texto,
     ERROR
 }
