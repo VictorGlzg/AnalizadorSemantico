@@ -1,14 +1,12 @@
 package proyecto;
 
+import javax.swing.table.DefaultTableModel;
+
 public class JFrameTablaSimbolos extends javax.swing.JFrame {
 
     public JFrameTablaSimbolos() {
         initComponents();
         setLocationRelativeTo(null);
-    }
-
-    public void recibeObjeto(objetoTabla ot){
-        
     }
     
     @SuppressWarnings("unchecked")
@@ -17,14 +15,14 @@ public class JFrameTablaSimbolos extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaSimbolos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
         jLabel1.setText("Tabla de simbolos");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaSimbolos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -40,7 +38,7 @@ public class JFrameTablaSimbolos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaSimbolos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,7 +68,6 @@ public class JFrameTablaSimbolos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-    
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new JFrameTablaSimbolos().setVisible(true);
@@ -81,6 +78,6 @@ public class JFrameTablaSimbolos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    public javax.swing.JTable tablaSimbolos;
     // End of variables declaration//GEN-END:variables
 }

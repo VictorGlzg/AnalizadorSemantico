@@ -3,7 +3,9 @@ package proyecto;
 public class objetoTabla {
     String var,valor;
     Tokens tipo;
-
+    //VAR NOMBRE DE LA VARIABLE.
+    //VALOR ES LA CANTIDAD O EL DATO.
+    //TIPO ES EL TIPO DE DATO.
     public objetoTabla(String var, String valor, Tokens tipo) {
         this.var = var;
         this.valor = valor;

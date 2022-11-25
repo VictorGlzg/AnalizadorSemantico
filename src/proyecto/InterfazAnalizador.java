@@ -14,20 +14,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
 import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
 
 /*
--ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
--CHECAR LOS DECIMALES.
--CREAR FRAME PARA TABLA DE SIMBOLOS.
--ARREGAR ASIGNACIÓN AL SINTÁCTICO -COMPROBAR EL TIPO DE DATO AL ASIGNAR
+- ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
+- COMPROBAR TIPO DE DATO EN ASIGNACIÓN.
+- ARREGLAR SINTACTICO ASIGNACIÓN DE VARIABLE.
 
 COMPLETADAS:
+- CHECAR LOS DECIMALES.
 -SEPARAR LÉXICO DEL SEMÁNTICO.
+-CREAR FRAME PARA TABLA DE SIMBOLOS.
 */
 
 public class InterfazAnalizador extends javax.swing.JFrame {
 JFrameTablaSimbolos  jf = new JFrameTablaSimbolos();
+DefaultTableModel tblModel = (DefaultTableModel)jf.tablaSimbolos.getModel();
 ArrayList<objetoTabla> tablaSimbolos = new ArrayList<objetoTabla>();
 String var, valor;
 Tokens tipo;
@@ -148,7 +151,7 @@ String semant="";
                     break;
                 // IDENTIFICADOR ----------------------------------------
                 case Identificador:
-                    if(tipo==null)
+                    if(tipo==null) //CORREGIR
                         asignacion = true;
                     else
                         asignacion = false;
@@ -225,9 +228,11 @@ String semant="";
     void imprimirTablaSimbolos(){
         System.out.println("---------TABLA DE SIMBOLOS-----------");
         System.out.println("Tipo - Variable - Valor ");
+        
         for(objetoTabla o : tablaSimbolos ){
         System.out.println(o.tipo+" "+o.var+" "+o.valor);
-        jf.recibeObjeto(o);
+        String[] tb  = {o.tipo.toString(),o.var,o.valor};
+        tblModel.addRow(tb);
         }
     }
     
