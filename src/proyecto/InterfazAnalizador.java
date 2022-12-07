@@ -13,10 +13,11 @@ import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /*
-- COMPROBAR TIPO DE DATO EN ASIGNACIÓN. -- SINTAX.CUP
+- CAMBIAR EL TIPO DE LECTURA DE DATOS AL MULTRIPLICAR SUMA ETC.
 
 COMPLETADAS:
 - BOTON LIMPIAR TABLA DE SIMBOLOS
+- COMPROBAR TIPO DE DATO EN ASIGNACIÓN. -- SINTAX.CUP
 - ARREGLAR LAS STRINGS PARA CREAR EL TOKEN TEXTO.
 - CHECAR LOS DECIMALES.
 -SEPARAR LÉXICO DEL SEMÁNTICO.
@@ -28,13 +29,12 @@ public class InterfazAnalizador extends javax.swing.JFrame {
 JFrameTablaSimbolos  jf = new JFrameTablaSimbolos();
 DefaultTableModel tblModel = (DefaultTableModel)jf.tablaSimbolos.getModel();
 ArrayList<objetoTabla> tablaSimbolos = new ArrayList<>();
-ArrayList<String> apuntadores = new ArrayList<>();
 int numero=0;
 String var, valor;
 Tokens tipo;
 Boolean declaracion = false, fin = false, valAsig = false, error = false ,
         asignacion = false, concatenacion = false, operacion = false;
-String semant="";
+String semant="", simb="", validacion="";
     /**
      * Creates new form InterfazAnalizador
      */
@@ -108,15 +108,21 @@ String semant="";
                     break;
                 case Suma:
                     resultado += "  <Operador suma>\t" + lexer.lexeme + "\n";
-                    if(numero!=0){
+                    if(numero!=0)
                            operacion = true;
-                    }
+                    simb = lexer.lexeme;
                     break;
                 case Resta:
                     resultado += "  <Operador resta>\t" + lexer.lexeme + "\n";
-                    break;
+                    if(numero!=0)
+                           operacion = true;
+                   simb = lexer.lexeme;
+                   break;
                 case Multiplicacion:
                     resultado += "  <Operador multiplicacion>\t" + lexer.lexeme + "\n";
+                    if(numero!=0)
+                           operacion = true;
+                   simb = lexer.lexeme;
                     break;
                 case Division:
                     resultado += "  <Operador division>\t" + lexer.lexeme + "\n";
@@ -129,6 +135,7 @@ String semant="";
                     break;
                     //BOLEANO-------------------
                 case Op_B:
+                    validacion = "Boleano";
                     resultado += "  <Operador booleano>\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion){
                     valor = lexer.lexeme;
@@ -151,7 +158,7 @@ String semant="";
                 case CerrarL:
                     resultado += "  <Punto y coma>\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion)
-                    fin = true;
+                        fin = true;
                     break;
                 // IDENTIFICADOR ----------------------------------------
                 case Identificador:
@@ -170,12 +177,23 @@ String semant="";
                     resultado += "  <Numero>\t\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion){
                         if(operacion){
-                            valor = String.valueOf(numero + Integer.parseInt(lexer.lexeme));
+                           switch(simb){
+                               case "+":
+                                    valor = String.valueOf(numero + Integer.parseInt(lexer.lexeme));
+                               break;
+                               case "-":
+                                   valor = String.valueOf(numero - Integer.parseInt(lexer.lexeme));
+                               break;
+                                case "*":
+                                   valor = String.valueOf(numero * Integer.parseInt(lexer.lexeme));
+                               break;
+                           }
                         }
                         else{
                             valor = lexer.lexeme;
                             valAsig = true;
                             }
+                     validacion = "Entero";
                     }
                     numero = Integer.parseInt(valor);
                     break;
@@ -184,6 +202,7 @@ String semant="";
                     if(declaracion||asignacion){
                     valor = lexer.lexeme;
                     valAsig = true;
+                    validacion = "Flotante";
                     }
                     break;
                 case Texto:
@@ -191,6 +210,7 @@ String semant="";
                     if(declaracion||asignacion){
                     valor = lexer.lexeme;
                     valAsig = true;
+                    validacion = "Cadena";
                     }
                     break;
                 case Arroba:
@@ -213,12 +233,19 @@ String semant="";
                     break;
             }
             if(fin){ //Termina de analizar la linea. Encontró un punto y coma &
-            
+            objetoTabla aux = null;
             if(declaracion){ //Se esta declarando y creando en la tabla de simbolos.
-                objetoTabla aux;
+                
                 if(valAsig){ //Existe valor asignado
                     //System.out.println(tipo+" "+var+" "+valor);
+                    if(validacion.equals(tipo.toString())){
                     aux = new objetoTabla(var,valor,tipo);
+                    }
+                    else{
+                        semant+= "Error tipo de dato es: "+validacion+
+                                " debe ser: "+tipo+" \nen la variable "+var+"\n";
+                        error = true;
+                    } 
                 }
                 else{ //No tiene un valor asignado
                     aux = new objetoTabla(var,tipo);
@@ -232,19 +259,31 @@ String semant="";
             if(asignacion){
                for(objetoTabla o : tablaSimbolos){
                    if(var.equals(o.var)){
-                       o.setValor(valor);
-                       
+                       if(validacion.equals(o.tipo.toString())){
+                        o.setValor(valor);
+                        }
+                   else{
+                        semant+= "Error tipo de dato es: "+validacion+
+                                " debe ser: "+o.tipo+" \nen la variable "+o.var+"\n";
+                        error = true;
+                     }
+                  break;
                    }
                }
             }
             //Reset para la siguiente declaracion o asignación
-            asignacion = error = valAsig = declaracion = fin = operacion = false;
-            tipo = null;
-            numero = 0;
+            reset();
             }
         }
     }
 
+    void reset(){
+        asignacion = error = valAsig = declaracion = fin = operacion = false;
+        tipo = null;
+        simb = validacion = "";
+        numero = 0;
+    }
+    
     void imprimirTablaSimbolos(){
         System.out.println("---------TABLA DE SIMBOLOS-----------");
         System.out.println("Tipo - Variable - Valor ");
@@ -476,6 +515,8 @@ String semant="";
 
     private void btnAbrirFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirFileActionPerformed
         JFileChooser chooser = new JFileChooser();
+        File defaultF = new File("./códigos"); //Abrir por defecto la carpeta donde se encuentran los ejemplos
+        chooser.setCurrentDirectory(defaultF); 
         chooser.showOpenDialog(null);
         File archivo = new File(chooser.getSelectedFile().getAbsolutePath());
         
@@ -576,7 +617,7 @@ String semant="";
         txtAnalizado.setText("");
         txtAnaliSint.setText("");
         semantico.setText("");
-        semant="";
+        reset();
         tablaSimbolos = new ArrayList<objetoTabla>();
         tblModel.setRowCount(0);
     }

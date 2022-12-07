@@ -2,7 +2,9 @@ inicial[]#
 cadena c&
 cadena ch = 'pruebas'&
 entero pruebas&
-entero variable = 3&
+pruebas = verdadero&
+entero variables = 3&
+variables = 'jaja'&
 flotante f = 3.656&
 flotante variable = 3.24&
 boleano b = verdadero&
