@@ -13,7 +13,9 @@ import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /*
-- CAMBIAR EL TIPO DE LECTURA DE DATOS AL MULTRIPLICAR SUMA ETC.
+- CAMBIAR EL TIPO DE LECTURA DE DATOS AL MULTRIPLICAR SUMA ETC. INORDEN
+- IMPLEMENTAR DIVISION
+- CAMBIAR LAS COMILLAS DE LAS CADENAS
 
 COMPLETADAS:
 - BOTON LIMPIAR TABLA DE SIMBOLOS
@@ -30,11 +32,12 @@ JFrameTablaSimbolos  jf = new JFrameTablaSimbolos();
 DefaultTableModel tblModel = (DefaultTableModel)jf.tablaSimbolos.getModel();
 ArrayList<objetoTabla> tablaSimbolos = new ArrayList<>();
 int numero=0;
+float dnum=0;
 String var, valor;
 Tokens tipo;
 Boolean declaracion = false, fin = false, valAsig = false, error = false ,
         asignacion = false, concatenacion = false, operacion = false;
-String semant="", simb="", validacion="";
+String semant="", simb="", validacion="", cad="";
     /**
      * Creates new form InterfazAnalizador
      */
@@ -108,19 +111,21 @@ String semant="", simb="", validacion="";
                     break;
                 case Suma:
                     resultado += "  <Operador suma>\t" + lexer.lexeme + "\n";
-                    if(numero!=0)
+                    if(numero!=0||dnum!=0)
                            operacion = true;
+                    else
+                        concatenacion = true;
                     simb = lexer.lexeme;
                     break;
                 case Resta:
                     resultado += "  <Operador resta>\t" + lexer.lexeme + "\n";
-                    if(numero!=0)
+                    if(numero!=0||dnum!=0)
                            operacion = true;
                    simb = lexer.lexeme;
                    break;
                 case Multiplicacion:
                     resultado += "  <Operador multiplicacion>\t" + lexer.lexeme + "\n";
-                    if(numero!=0)
+                    if(numero!=0||dnum!=0)
                            operacion = true;
                    simb = lexer.lexeme;
                     break;
@@ -200,18 +205,40 @@ String semant="", simb="", validacion="";
                 case Decimal:
                     resultado += "  <Numero decimal>\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion){
-                    valor = lexer.lexeme;
-                    valAsig = true;
+                    if(operacion){
+                           switch(simb){
+                               case "+":
+                                    valor = String.valueOf(dnum + Float.parseFloat(lexer.lexeme));
+                               break;
+                               case "-":
+                                   valor = String.valueOf(dnum - Float.parseFloat(lexer.lexeme));
+                               break;
+                                case "*":
+                                   valor = String.valueOf(dnum * Float.parseFloat(lexer.lexeme));
+                               break;
+                           }
+                        }
+                   else{
+                            valor = lexer.lexeme;
+                            valAsig = true;
+                            }
                     validacion = "Flotante";
                     }
+                    dnum = Float.parseFloat(valor);
                     break;
                 case Texto:
                     resultado += "  <Texto>\t\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion){
-                    valor = lexer.lexeme;
+                     if(concatenacion){
+                           valor = cad + String.valueOf(lexer.lexeme);
+                     }
+                     else{
+                     valor = lexer.lexeme;
                     valAsig = true;
+                     }
                     validacion = "Cadena";
                     }
+                    cad = String.valueOf(valor);
                     break;
                 case Arroba:
                     resultado += "  <Arroba>\t" + lexer.lexeme + "\n";
@@ -280,8 +307,9 @@ String semant="", simb="", validacion="";
     void reset(){
         asignacion = error = valAsig = declaracion = fin = operacion = false;
         tipo = null;
-        simb = validacion = "";
+        simb = cad = validacion = "";
         numero = 0;
+        dnum = 0;
     }
     
     void imprimirTablaSimbolos(){

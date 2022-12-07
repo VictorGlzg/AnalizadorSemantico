@@ -19,7 +19,7 @@ terminal Entero,Flotante,Boleano,Cadena,Texto,Para,Cambio,Si,Sino,Ademas,Mientra
 Igual, Exponente,Suma, Resta, Multiplicacion, Division,LlaveAC, CerrarL, Apertura,
 Cerradura,Op_R,Op_L,Op_B,Op_I,Identificador, Numero, Decimal, Arroba, DoblePunto, Caso, Salida, ERROR;
 
-non terminal INICIO, CUERPO, DECLA, ASIG, OPNUM, IF, IF_ELSE,
+non terminal INICIO, CUERPO, DECLA, ASIG, OPNUM, CONC, IF, IF_ELSE,
 FOR, BOOL_SENT, FOR_SENT, SWITCH, MASCASE, WHILE, SENT_IF, ELSE;
 
 start with INICIO;
@@ -30,6 +30,7 @@ INICIO ::=
 CUERPO ::= 
     CUERPO DECLA | DECLA | 
     CUERPO ASIG | ASIG |
+    CUERPO CONC | CONC |
     CUERPO SENT_IF | SENT_IF | 
     CUERPO FOR | FOR |
     CUERPO SWITCH | SWITCH |
@@ -44,12 +45,15 @@ DECLA ::=
     Boleano Identificador Igual Op_B CerrarL |
     Entero Identificador Igual Numero CerrarL |
     Entero Identificador Igual OPNUM CerrarL |
+    Flotante Identificador Igual OPNUM CerrarL |
+    Cadena Identificador Igual CONC CerrarL |
     Cadena Identificador Igual Texto CerrarL
 ;
 
 ASIG::=
     Identificador Igual Numero CerrarL |
     Identificador Igual OPNUM CerrarL |
+    Identificador Igual CONC CerrarL
     Identificador Igual Decimal CerrarL |
     Identificador Igual Op_B CerrarL |
     Identificador Igual Texto CerrarL
@@ -63,7 +67,20 @@ OPNUM::=
     OPNUM Division Numero |
     OPNUM Multiplicacion Numero |
     OPNUM Suma Numero |
-    OPNUM Resta Numero
+    OPNUM Resta Numero |
+    Decimal Suma Decimal |
+    Decimal Resta Decimal |
+    Decimal Multiplicacion Decimal |
+    Decimal Division Decimal |
+    OPNUM Division Decimal |
+    OPNUM Multiplicacion Decimal |
+    OPNUM Suma Decimal |
+    OPNUM Resta Decimal
+;
+
+CONC::=
+    Texto Suma Texto |
+    CONC Suma Texto
 ;
 
 SENT_IF::=
