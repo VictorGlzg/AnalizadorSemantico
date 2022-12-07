@@ -28,11 +28,11 @@ public class JFrameTablaSimbolos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tipo", "Nombre", "Valor"
+                "ID", "Tipo", "Nombre", "Valor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

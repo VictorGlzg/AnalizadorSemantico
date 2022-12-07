@@ -1,12 +1,8 @@
 package proyecto;
 import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -15,11 +11,9 @@ import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
-import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
 
 /*
 - COMPROBAR TIPO DE DATO EN ASIGNACIÓN. -- SINTAX.CUP
-- ARREGLAR SINTACTICO ASIGNACIÓN DE VARIABLE.
 
 COMPLETADAS:
 - BOTON LIMPIAR TABLA DE SIMBOLOS
@@ -27,15 +21,19 @@ COMPLETADAS:
 - CHECAR LOS DECIMALES.
 -SEPARAR LÉXICO DEL SEMÁNTICO.
 -CREAR FRAME PARA TABLA DE SIMBOLOS.
+- ARREGLAR SINTACTICO ASIGNACIÓN DE VARIABLE.
 */
 
 public class InterfazAnalizador extends javax.swing.JFrame {
 JFrameTablaSimbolos  jf = new JFrameTablaSimbolos();
 DefaultTableModel tblModel = (DefaultTableModel)jf.tablaSimbolos.getModel();
-ArrayList<objetoTabla> tablaSimbolos = new ArrayList<objetoTabla>();
+ArrayList<objetoTabla> tablaSimbolos = new ArrayList<>();
+ArrayList<String> apuntadores = new ArrayList<>();
+int numero=0;
 String var, valor;
 Tokens tipo;
-Boolean declaracion = false, fin = false, valAsig = false, error = false ,asignacion = false;
+Boolean declaracion = false, fin = false, valAsig = false, error = false ,
+        asignacion = false, concatenacion = false, operacion = false;
 String semant="";
     /**
      * Creates new form InterfazAnalizador
@@ -110,6 +108,9 @@ String semant="";
                     break;
                 case Suma:
                     resultado += "  <Operador suma>\t" + lexer.lexeme + "\n";
+                    if(numero!=0){
+                           operacion = true;
+                    }
                     break;
                 case Resta:
                     resultado += "  <Operador resta>\t" + lexer.lexeme + "\n";
@@ -154,21 +155,29 @@ String semant="";
                     break;
                 // IDENTIFICADOR ----------------------------------------
                 case Identificador:
+                    checarTablaSimbolos(lexer.lexeme);
                     if(tipo==null) //CORREGIR
                         asignacion = true;
                     else
                         asignacion = false;
-                    checarTablaSimbolos(lexer.lexeme);
                     resultado += "  <Identificador>\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion)
-                    var = lexer.lexeme;
+                        var = lexer.lexeme;
+                    else
+                        concatenacion = true;
                     break;
                 case Numero:
                     resultado += "  <Numero>\t\t" + lexer.lexeme + "\n";
                     if(declaracion||asignacion){
-                    valor = lexer.lexeme;
-                    valAsig = true;
+                        if(operacion){
+                            valor = String.valueOf(numero + Integer.parseInt(lexer.lexeme));
+                        }
+                        else{
+                            valor = lexer.lexeme;
+                            valAsig = true;
+                            }
                     }
+                    numero = Integer.parseInt(valor);
                     break;
                 case Decimal:
                     resultado += "  <Numero decimal>\t" + lexer.lexeme + "\n";
@@ -229,8 +238,9 @@ String semant="";
                }
             }
             //Reset para la siguiente declaracion o asignación
-            asignacion = error = valAsig = declaracion = fin  = false;
+            asignacion = error = valAsig = declaracion = fin = operacion = false;
             tipo = null;
+            numero = 0;
             }
         }
     }

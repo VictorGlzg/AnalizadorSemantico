@@ -19,7 +19,7 @@ terminal Entero,Flotante,Boleano,Cadena,Texto,Para,Cambio,Si,Sino,Ademas,Mientra
 Igual, Exponente,Suma, Resta, Multiplicacion, Division,LlaveAC, CerrarL, Apertura,
 Cerradura,Op_R,Op_L,Op_B,Op_I,Identificador, Numero, Decimal, Arroba, DoblePunto, Caso, Salida, ERROR;
 
-non terminal INICIO, CUERPO, DECLA, ASIG, IF, IF_ELSE,
+non terminal INICIO, CUERPO, DECLA, ASIG, SUM, IF, IF_ELSE,
 FOR, BOOL_SENT, FOR_SENT, SWITCH, MASCASE, WHILE, SENT_IF, ELSE;
 
 start with INICIO;
@@ -29,6 +29,7 @@ INICIO ::=
 ;
 CUERPO ::= 
     CUERPO DECLA | DECLA | 
+    CUERPO ASIG | ASIG |
     CUERPO SENT_IF | SENT_IF | 
     CUERPO FOR | FOR |
     CUERPO SWITCH | SWITCH |
@@ -42,11 +43,21 @@ DECLA ::=
     Flotante Identificador Igual Decimal CerrarL |
     Boleano Identificador Igual Op_B CerrarL |
     Entero Identificador Igual Numero CerrarL |
+    Entero Identificador Igual SUM CerrarL |
     Cadena Identificador Igual Texto CerrarL
 ;
 
 ASIG::=
-    
+    Identificador Igual Numero CerrarL |
+    Identificador Igual SUM CerrarL |
+    Identificador Igual Decimal CerrarL |
+    Identificador Igual Op_B CerrarL |
+    Identificador Igual Texto CerrarL
+;
+
+SUM::=
+    Numero Suma Numero | 
+    SUM Suma Numero 
 ;
 
 SENT_IF::=

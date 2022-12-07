@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Lex.flex</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/objetoTabla.java</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/JFrameTablaSimbolos.java</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/InterfazAnalizador.java</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Analizador.java</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/LexerCup.flex</file>
-            <file>file:/C:/Users/pache/Documents/GitHub/AnalizadorSemantico/src/proyecto/Sintax.cup</file>
+            <file>file:/C:/Users/PC/Documents/GitHub/AnalizadorSemantico/src/proyecto/Analizador.java</file>
+            <file>file:/C:/Users/PC/Documents/GitHub/AnalizadorSemantico/src/proyecto/Sintax.cup</file>
+            <file>file:/C:/Users/PC/Documents/GitHub/AnalizadorSemantico/src/proyecto/JFrameTablaSimbolos.java</file>
+            <file>file:/C:/Users/PC/Documents/GitHub/AnalizadorSemantico/src/proyecto/InterfazAnalizador.java</file>
         </group>
     </open-files>
 </project-private>
